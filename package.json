@@ -1,0 +1,28 @@
+{
+  "name": "google-login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "firebase": "^7.8.1",
+    "firebase-admin": "^8.9.2",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node  -r esm server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dingzhengru/google-login.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dingzhengru/google-login/issues"
+  },
+  "homepage": "https://github.com/dingzhengru/google-login#readme"
+}
