@@ -72,10 +72,11 @@ app.post('/api/auth/register', function (req, res) {
 
     let errors = []
 
+    // 判斷各個值有效性
     registerValids.validEmail(email).then(result => {
-
-        errors.push(result)
-
+        if(result != true){
+            errors.push(result)
+        }
         if(registerValids.validFirstName(firstName) != true){
             errors.push(registerValids.validFirstName(firstName))
         }
