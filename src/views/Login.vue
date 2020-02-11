@@ -62,7 +62,7 @@
                         block
                         :disabled="!email || !password || !loginValid"
                         :loading="isLogining">
-                        <v-icon>fa-arrow-circle-right</v-icon>
+                        <v-icon>fa-paper-plane</v-icon>
                     </v-btn>
                 </v-form>
             </v-stepper-content>
@@ -196,7 +196,7 @@ export default {
     #stepper {
         max-width: 450px;
         margin: 0 auto;
-        margin-top: 150px;
+        margin-top: 100px;
         .step1 {
 
         }

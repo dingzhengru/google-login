@@ -112,6 +112,8 @@ app.post('/api/auth/register', function (req, res) {
     
     const data = req.body
 
+    console.log(data)
+
     let errors = []
 
     // 判斷各個值有效性
@@ -130,7 +132,7 @@ app.post('/api/auth/register', function (req, res) {
         }
 
         if(errors.length > 0) {
-            res.send(errors)
+            res.json(errors)
         } else {
             db.collection('users').add(data)
             .then(() => {
