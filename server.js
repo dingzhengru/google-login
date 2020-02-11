@@ -3,7 +3,7 @@
 
 import express from 'express'
 import firebase from 'firebase'
-import registerValids  from './public/js/register-valids.js'
+import registerValids  from './register-valids.js'
 import { db }  from './firebase.js'
 
 const app = express()
@@ -13,17 +13,6 @@ app.use(express.json()) // for parsing application/json
 app.use(express.static('./')) // 靜態檔案
 
 const port = 3000
-
-// console.log(registerValids.validFirstName('1'))
-// console.log(registerValids.validLastName('2'))
-
-
-// registerValids.validEmail('zxcv1234')
-// .then(result => {
-//     console.log(result)
-// })
-
-// console.log(registerValids.validPassword('zxcasdas1zxc'))
 
 app.post('/api/auth/login', function (req, res) {
     let email = req.body['email']
