@@ -1,4 +1,4 @@
-import { db } from '../../firebase.js'
+import { db } from './firebase.js'
 
 // validEmail: async function (return promise)
 
