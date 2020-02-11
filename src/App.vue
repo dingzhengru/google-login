@@ -1,12 +1,12 @@
 <template>
-<div id="app">
+<v-app>
     <div id="nav">
         <router-link to="/">首頁</router-link> |
         <router-link to="/login">登入</router-link> |
         <router-link to="/register">註冊</router-link> |
     </div>
     <router-view/>
-</div>
+</v-app>
 </template>
 
 <script>
@@ -23,23 +23,21 @@ export default {
 
 <style lang="scss" scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
 }
 
 #nav {
-  padding: 30px;
+    text-align: center;
+    padding: 10px;
+    
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+    a {
+        font-weight: bold;
+        color: #2c3e50;
 
-    &.router-link-exact-active {
-      color: #42b983;
+        &.router-link-exact-active {
+            color: #42b983;
+        }
     }
-  }
 }
 </style>
