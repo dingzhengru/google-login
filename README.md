@@ -49,3 +49,7 @@ app.use(cors(corsOptions))
 ```
 <v-icon>fa-search</v-icon>
 ```
+
+## vue-i18n
+*  參考: https://dotblogs.com.tw/wasichris/2018/05/12/012517
+*  

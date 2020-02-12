@@ -1,7 +1,10 @@
 <template>
-<div id="home">
+<v-container class="container">
     <h1>Home</h1>
-</div>
+    <h2>vue i18n test</h2>
+    <p>{{ $t('__ok') }}</p>
+    <p></p>
+</v-container>
 </template>
 
 <script>
