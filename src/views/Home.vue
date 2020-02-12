@@ -2,8 +2,9 @@
 <v-container class="container">
     <h1>Home</h1>
     <h2>vue i18n test</h2>
-    <p>{{ $t('__ok') }}</p>
-    <p></p>
+    <p>
+        {{ $vuetify.lang.t('$vuetify.login') }}
+    </p>
 </v-container>
 </template>
 
@@ -12,5 +13,10 @@
 
 export default {
     name: 'Home',
+    mounted () {
+        this.$vuetify.lang.current = 'zhHant'
+
+        console.log(this.$vuetify.lang.t('$vuetify.dataIterator.noResultsText'))
+    }
 }
 </script>

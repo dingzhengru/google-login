@@ -50,6 +50,76 @@ app.use(cors(corsOptions))
 <v-icon>fa-search</v-icon>
 ```
 
-## vue-i18n
-*  參考: https://dotblogs.com.tw/wasichris/2018/05/12/012517
-*  
+## vuetifyjs-i18n
+*  參考: https://vuetifyjs.com/en/customization/internationalization
+*  參考: https://stackoverflow.com/questions/52436633/how-make-i18n-for-vuetify
+*  先自創一個目錄與其翻譯檔 ex: ```i18n/en.ts```
+*  到 ```Vue.use(Vuetify)``` 的 js 檔 (vue-cli 引入的話 會在 plugins/vuetify.js)
+*  引入自創的翻譯檔案，並放入即可
+*  template 使用: ```{{ $vuetify.lang.t('$vuetify.close') }}```
+*  vue 使用 ```this.$vuetify.lang.t('$vuetify.login')```
+*  改變語系 ```this.$vuetify.lang.current = 'zhHant'```
+*  官方給的預設翻譯檔案會在: ```node_modules/vuetify/src/locale```
+
+vuetify.js
+```
+import Vue from 'vue';
+import Vuetify from 'vuetify/lib';
+import zhHant from 'vuetify/es5/locale/zh-Hant';
+
+Vue.use(Vuetify);
+
+import en from '../i18n/en.ts';
+
+export default new Vuetify({
+    lang: {
+        locales: { en, zhHant },
+        current: 'zh-Hant',
+    },
+    icons: {
+        iconfont: 'fa',
+    },
+});
+```
+
+i18n/en.ts(自創的翻譯檔案，從原本新增自己需要的)
+```
+export default {
+    close: 'Close',
+    dataIterator: {
+        pageText: '{0}-{1} of {2}',
+        noResultsText: 'No matching records found',
+        loadingText: 'Loading items...',
+    },
+    dataTable: {
+        itemsPerPageText: 'Rows per page:',
+        ariaLabel: {
+            sortDescending: ': Sorted descending. Activate to remove sorting.',
+            sortAscending: ': Sorted ascending. Activate to sort descending.',
+            sortNone: ': Not sorted. Activate to sort ascending.',
+        },
+        sortBy: 'Sort by',
+    },
+    dataFooter: {
+        pageText: '{0}-{1} of {2}',
+        itemsPerPageText: 'Items per page:',
+        itemsPerPageAll: 'All',
+        nextPage: 'Next page',
+        prevPage: 'Previous page',
+        firstPage: 'First page',
+        lastPage: 'Last page',
+    },
+    datePicker: {
+        itemsSelected: '{0} selected',
+    },
+    noDataText: 'No data available',
+    carousel: {
+        prev: 'Previous visual',
+        next: 'Next visual',
+    },
+    calendar: {
+        moreEvents: '{0} more',
+    },
+    login: 'Login'
+}
+```
