@@ -71,15 +71,14 @@ export default {
         lastNameLen: 'last name length must 1 ~ 10 character',
         emailRequired: 'email is required',
         emailLen: 'email length must 6 ~ 30 character',
-        emailSpecial: 'email dose not allowed special characters',
+        emailSpecial: 'email does not allowed special characters',
         emailExisted: 'this email is existed',
         passwordRequired: 'password is required',
         passwordLen: 'password length must 8 ~ 15 character',
-        passwordSpecial: 'password dose not allowed special characters',
+        passwordSpecial: 'password does not allowed special characters',
         passwordValid: 'password must be 8 ~ 15 & least 1 lower english character & least 1 number character',
         repasswordNotMatch: 'password and password confirmation do not match',
-        passwordWrong : 'incorrect password',
         otherError: 'unexpected error, please try again',
-        success: 'login success'
+        success: 'register success'
     }
 }
