@@ -16,23 +16,24 @@
                 <h1 class="text-center">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
                 <v-form
                     class="email-form"
-                    v-model="loginValid"
+                    v-model="emailValid"
                     lazy-validation
                     @submit.prevent="sendEmail()">
                     <v-text-field
                         name="email"
                         v-model="email"
                         :label="$vuetify.lang.t('$vuetify.login.email')"
-                        required
                         counter="30"
                         :rules="emailRules"
                         ref="emailRef"
+                        autofocus
                     ></v-text-field>
+                    
                     <v-btn
                         color="primary"
                         type="submit"
                         block
-                        :disabled="!email || !loginValid"
+                        :disabled="!email || !emailValid"
                         :loading="isLogining">
                         <v-icon>fa-arrow-circle-right</v-icon>
                     </v-btn>
@@ -40,7 +41,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="2" class="step2">
-                <h1 class="text-center">登入</h1>
+                <h1 class="text-center">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
                 <v-form
                     class="login-form"
                     v-model="loginValid"
@@ -51,30 +52,54 @@
                         name="password"
                         v-model="password"
                         :label="$vuetify.lang.t('$vuetify.login.password')"
-                        required
                         counter="15"
                         ref="passwordRef"
                         :rules="passwordRules"
                     ></v-text-field>
-                    <v-btn
+                    <v-row>
+                        <v-col cols="2">
+                            <v-btn
+                                color="secondary"
+                                block
+                                @click="st = 1">
+                                <v-icon>fa-arrow-circle-left</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2"></v-col>
+                        <v-col cols="8">
+                            <v-btn
+                                color="primary"
+                                type="submit"
+                                block
+                                :disabled="!email || !password || !loginValid"
+                                :loading="isLogining">
+                                <v-icon>fa-paper-plane</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <!-- <v-btn
                         color="primary"
                         type="submit"
                         block
                         :disabled="!email || !password || !loginValid"
                         :loading="isLogining">
                         <v-icon>fa-paper-plane</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                 </v-form>
             </v-stepper-content>
         </v-stepper-items>
     </v-stepper>
     <v-row class="login-bottom" no-gutters>
         <v-col cols="6">
-            繁體中文
+            <v-select
+                :items="getLangs"
+                label="語系"
+                v-model="lang"
+                item-text="text"
+                item-value="value"
+            ></v-select>
         </v-col>
-        <v-col cols="6" class="text-right">
-            
-        </v-col>
+        <v-col cols="6" class="text-right"></v-col>
     </v-row>
 </v-container>
 </template>
@@ -93,9 +118,11 @@ export default {
             error: '',
             hasMsg: false,
             hasError: false,
+            emailValid: false,
             loginValid: false,
             isLogining: false,
             st: 1,
+            lang: {text: '繁體中文', value: 'zhHant'}
         }
     },
     computed: {
@@ -107,23 +134,35 @@ export default {
         },
         passwordRules() {
             return [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 15 && v.length >=8 ) || '密碼是 8 到 15個字元',
+                v => !!v || this.$vuetify.lang.t('$vuetify.login.required'),
+                v => (v && v.length <= 15 && v.length >=8 ) || this.$vuetify.lang.t('$vuetify.login.passwordLen'),
             ]
+        },
+        getLangs() {
+            return this.$store.state.langs
+        },
+        getCurrentLang() {
+            return this.$store.state.currentLang
+        },
+        getCurrentLangObject() {
+            return this.$store.getters.currentLangObject
         }
     },
     mounted () {
+        // 從 vue store 那的方法取得 lang object ex: {text: 'English', value: 'en'}
+        this.lang = this.getCurrentLangObject
+
         // focus name input
-        this.$nextTick(() => {
-            setTimeout(() => {
-                this.$refs.emailRef.focus();
-            }, 500)
-        });
+        // this.$nextTick(() => {
+        //     setTimeout(() => {
+        //         this.$refs.emailRef.focus();
+        //     }, 500)
+        // });
     },
     methods: {
         sendEmail() {
             // 先認證 email
-            if(!this.loginValid || !this.email)
+            if(!this.emailValid || !this.email)
                 return
             const email = this.email
 
@@ -138,7 +177,12 @@ export default {
                 let data = result.data
                 if (typeof data === 'string' || data instanceof String) {
                     this.hasError = true
-                    this.error = data
+                    // 判斷是甚麼錯誤，對應翻譯內容
+                    if(data == 'emailNotExist') {
+                        this.error = this.$vuetify.lang.t('$vuetify.login.emailNotExist')
+                    } else {
+                        this.error = this.$vuetify.lang.t('$vuetify.login.otherError')
+                    }
                 } else {
                     // 認證成功
                     this.st = 2
@@ -151,10 +195,10 @@ export default {
                 this.isLogining = false
                 console.log(result);
             }).catch(error => {
+                // 意外的錯誤
                 this.isLogining = false
                 this.hasError = true
-                this.error = '意外的錯誤，請重整後再試'
-                console.log(error);
+                this.error = this.$vuetify.lang.t('$vuetify.login.otherError')
             });
         },
         login () {
@@ -176,21 +220,43 @@ export default {
                 let data = result.data
                 if (typeof data === 'string' || data instanceof String) {
                     this.hasError = true
-                    this.error = data
+                    if(data == 'passwordWrong') {
+                        this.error = this.$vuetify.lang.t('$vuetify.login.passwordWrong')
+                    } else {
+                        this.error = this.$vuetify.lang.t('$vuetify.login.otherError')
+                    }
                 } else {
                     // 認證成功
                     this.st = 3
-                    this.msg = '登入成功'
+                    this.msg = this.$vuetify.lang.t('$vuetify.login.success')
                     this.hasMsg = true
                 }
                 this.isLogining = false
                 console.log(result);
             }).catch(error => {
+                // 意外的錯誤
                 this.isLogining = false
                 this.hasError = true
-                this.error = '意外的錯誤，請重整後再試'
+                this.msg = this.$vuetify.lang.t('$vuetify.login.otherError')
                 console.log(error);
             });
+        }
+    },
+    watch: {
+        lang (newValue)  {
+            // 取一開始的值會是 object 所以才需要此判斷
+            let lang = newValue.value || newValue
+
+            // 利用 localStorage 存取語言
+            localStorage.setItem('lang', lang)
+
+            // 修改 vue store 的 currentLang
+            this.$store.commit('setCurrentLang', lang)
+
+            // 修改 vuetify 現在的語系
+            this.$vuetify.lang.current =  lang
+
+            console.log('watch: set lang:', lang)
         }
     }
 }

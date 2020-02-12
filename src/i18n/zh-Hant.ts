@@ -48,16 +48,40 @@ export default {
     login: {
         title: '登入',
         email: '信箱',
+        password: '密碼',
         required: '必填',
-        emailLen: '信箱長度必須是 6 到 30個字元'
+        emailLen: '信箱必須是 6 到 30 個字元',
+        passwordLen: '密碼必須是 8 到 15 個字元',
+        emailNotExist: '無此信箱',
+        passwordWrong : '密碼錯誤',
+        otherError: '意外的錯誤，請再發送一次，或是重整再試',
+        success: '登入成功'
     },
     register: {
-
-    },
-    auth: {
-        login: 'Login',
-    },
-    valid: {
-        required: 'Required',
+        title: '註冊',
+        firstName: '姓氏',
+        lastName: '名字',
+        email: '信箱',
+        password: '密碼',
+        repassword: '密碼確認',
+        required: '必填',
+        firstNameRequired: '姓氏不可為空',
+        firstNameLen: '姓氏長度不可大於10',
+        lastNameRequired: '名字不可為空',
+        lastNameLen: '名字長度不可大於10',
+        emailRequired: '信箱不可為空',
+        emailLen: '信箱必須是 6 到 30 個字元',
+        emailSpecial: '信箱不可有特殊字',
+        emailExisted: '此信箱已註冊',
+        passwordRequired: '密碼不可為空',
+        passwordLen: '密碼必須是 8 到 15 個字元',
+        passwordSpecial: '密碼不可有特殊字',
+        passwordValid: '密碼必須是長度為 8 到 15 的英數混合字串',
+        repasswordNotMatch: '密碼與密碼確認不符',
+        otherError: '意外的錯誤，請再發送一次，或是重整再試',
+        success: '註冊成功'
     }
 }
+
+        
+        

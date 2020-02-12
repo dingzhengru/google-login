@@ -20,7 +20,7 @@
         max-width="450"
     >
         <v-card-title class="justify-center">
-            <h2>註冊</h2>
+            <h2>{{ $vuetify.lang.t('$vuetify.register.title') }}</h2>
         </v-card-title>
         <v-card-text>
             <v-form
@@ -33,19 +33,18 @@
                         <v-text-field
                             name="firstName"
                             v-model="firstName"
-                            label="姓氏"
-                            required
+                            :label="$vuetify.lang.t('$vuetify.register.firstName')"
                             counter="10"
                             :rules="firstNameRules"
                             ref="firstNameRef"
+                            autofocus
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6">
                         <v-text-field
                             name="lastName"
                             v-model="lastName"
-                            label="名字"
-                            required
+                            :label="$vuetify.lang.t('$vuetify.register.lastName')"
                             counter="10"
                             :rules="lastNameRules"
                             ref="lastNameRef"
@@ -55,8 +54,7 @@
                 <v-text-field
                     name="email"
                     v-model="email"
-                    label="信箱"
-                    required
+                    :label="$vuetify.lang.t('$vuetify.register.email')"
                     counter="30"
                     :rules="emailRules"
                     ref="emailRef"
@@ -64,8 +62,7 @@
                 <v-text-field
                     name="password"
                     v-model="password"
-                    label="密碼"
-                    required
+                    :label="$vuetify.lang.t('$vuetify.register.password')"
                     counter="15"
                     ref="passwordRef"
                     :rules="passwordRules"
@@ -73,40 +70,43 @@
                 <v-text-field
                     name="repassword"
                     v-model="repassword"
-                    label="密碼確認"
-                    required
+                    :label="$vuetify.lang.t('$vuetify.register.repassword')"
                     counter="15"
                     ref="repasswordRef"
                     :rules="repasswordRules"
                 ></v-text-field>
-                <!-- <v-btn
+                <v-btn
                     color="primary"
                     type="submit"
                     block
                     :disabled="!firstName || !lastName || !email || !password || !repassword  || !registerValid"
                     :loading="isRegistering">
                     <v-icon>fa-paper-plane</v-icon>
-                </v-btn> -->
-                <v-btn
+                </v-btn>
+                <!-- <v-btn
                     color="primary"
                     type="submit"
                     block
                     :loading="isRegistering">
                     <v-icon>fa-paper-plane</v-icon>
-                </v-btn>
+                </v-btn> -->
             </v-form>
         </v-card-text>
         <v-card-actions>
       
         </v-card-actions>
     </v-card>
-    <v-row class="register-bottom" no-gutters>
+    <v-row class="login-bottom" no-gutters>
         <v-col cols="6">
-            繁體中文
+            <v-select
+                :items="getLangs"
+                label="語系"
+                v-model="lang"
+                item-text="text"
+                item-value="value"
+            ></v-select>
         </v-col>
-        <v-col cols="6" class="text-right">
-            
-        </v-col>
+        <v-col cols="6" class="text-right"></v-col>
     </v-row>
 </v-container>
 </template>
@@ -130,35 +130,59 @@ export default {
             hasError: false,
             registerValid: false,
             isRegistering: false,
-            firstNameRules: [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 10) || '最多10字元'
-            ],
-            lastNameRules: [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 10) || '最多10字元',
-            ],
-            emailRules: [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 30 && v.length >= 6) || '信箱是 6 到 30個字元',
-            ],
-            passwordRules: [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 15 && v.length >=8 ) || '密碼是 8 到 15個字元',
-            ],
-            repasswordRules: [
-                v => !!v || '不可為空',
-            ],
-            st: 1,
+            lang: {text: '繁體中文', value: 'zhHant'}
+        }
+    },
+    computed: {
+        firstNameRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.register.required'),
+                v => (v && v.length <= 10) || this.$vuetify.lang.t('$vuetify.register.firstNameLen'),
+            ]
+        },
+        lastNameRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.register.required'),
+                v => (v && v.length <= 10) || this.$vuetify.lang.t('$vuetify.register.lastNameLen'),
+            ]
+        },
+        emailRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.register.required'),
+                v => (v && v.length <= 30 && v.length >= 6) || this.$vuetify.lang.t('$vuetify.register.emailLen'),
+            ]
+        },
+        passwordRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.register.required'),
+                v => (v && v.length <= 15 && v.length >=8 ) || this.$vuetify.lang.t('$vuetify.register.passwordLen'),
+            ]
+        },
+        repasswordRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.register.required'),
+            ]
+        },
+        getLangs() {
+            return this.$store.state.langs
+        },
+        getCurrentLang() {
+            return this.$store.state.currentLang
+        },
+        getCurrentLangObject() {
+            return this.$store.getters.currentLangObject
         }
     },
     mounted () {
+        // 從 vue store 那的方法取得 lang object ex: {text: 'English', value: 'en'}
+        this.lang = this.getCurrentLangObject
+
         // focus name input
-        this.$nextTick(() => {
-            setTimeout(() => {
-                this.$refs.firstNameRef.focus();
-            }, 500)
-        });
+        // this.$nextTick(() => {
+        //     setTimeout(() => {
+        //         this.$refs.firstNameRef.focus();
+        //     }, 500)
+        // });
     },
     methods: {
         register() {
@@ -174,7 +198,7 @@ export default {
             this.hasError = false
 
             if(password != repassword) {
-                this.errors.push('密碼確認與密碼不符')
+                this.errors.push(this.$vuetify.lang.t('$vuetify.register.repasswordNotMatch'))
                 this.hasError = true
                 this.isRegistering = false
                 return
@@ -187,10 +211,25 @@ export default {
                 password: password
             }).then(result => {
                 let data = result.data
+                console.log(data)
                 // 回傳回來的是 Array (errors)
                 if (typeof data === 'string' || data instanceof String || Array.isArray(data)) {
                     this.hasError = true
-                    this.errors = data
+                    for(let i in data) {
+                        if(data[i] == 'emailSpecial') {
+                            this.errors.push(this.$vuetify.lang.t('$vuetify.register.emailSpecial'))
+                        }
+                        if(data[i] == 'emailExisted') {
+                            this.errors.push(this.$vuetify.lang.t('$vuetify.register.emailExisted'))
+                        }
+                        if(data[i] == 'passwordSpecial') {
+                            console.log(1231232)
+                            this.errors.push(this.$vuetify.lang.t('$vuetify.register.passwordSpecial'))
+                        }
+                        if(data[i] == 'passwordValid') {
+                            this.errors.push(this.$vuetify.lang.t('$vuetify.register.passwordValid'))
+                        }
+                    }
                 } else {
                     // 認證成功
                     this.msg = '註冊成功'
@@ -201,10 +240,27 @@ export default {
             }).catch(error => {
                 this.isRegistering = false
                 this.hasError = true
-                this.errors.push('意外的錯誤，請重整後再試')
+                this.errors.push(this.$vuetify.lang.t('$vuetify.register.otherError'))
                 console.log(error);
             });
         },
+    },
+    watch: {
+        lang (newValue)  {
+            // 取一開始的值會是 object 所以才需要此判斷
+            let lang = newValue.value || newValue
+
+            // 利用 localStorage 存取語言
+            localStorage.setItem('lang', lang)
+
+            // 修改 vue store 的 currentLang
+            this.$store.commit('setCurrentLang', lang)
+
+            // 修改 vuetify 現在的語系
+            this.$vuetify.lang.current =  lang
+
+            console.log('watch: set lang:', lang)
+        }
     }
 }
 </script>

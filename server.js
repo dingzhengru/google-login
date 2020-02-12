@@ -44,14 +44,14 @@ app.post('/api/auth/login', function (req, res) {
         .then(snapshot => {
             data = snapshot.docs.map(doc => doc.data())
             if(data.length <= 0) {
-                res.send('無此信箱')
+                res.send('emailNotExist')
             } else {
                 res.send(data)
             }
         })
         .catch(err => {
             console.log('資料庫存取失敗', err)
-            res.send('資料庫存取失敗')
+            res.send('otherError')
         })
     } else if(email && password) {
         // email 跟 password 都有
@@ -64,14 +64,14 @@ app.post('/api/auth/login', function (req, res) {
         .then(snapshot => {
             data = snapshot.docs.map(doc => doc.data())
             if(data.length <= 0) {
-                res.send('密碼錯誤')
+                res.send('passwordWrong')
             } else {
                 res.json(data)
             }
         })
         .catch(err => {
             console.log('資料庫存取失敗', err)
-            res.send('資料庫存取失敗')
+            res.send('otherError')
         })
     }
 

@@ -19,11 +19,11 @@ export default new Vuex.Store({
                 value: 'th'
             }
         ],
-        currentLang: 'zhHant'
+        currentLang: ''
     },
     getters: {
         currentLangObject(state) {
-            let lang = state.currentLang
+            let lang = state.currentLang || localStorage.getItem('lang')
             let langObject = { text: '繁體中文', value: 'zhHant' }
             for(let i in state.langs) {
                 if(state.langs[i].value == lang) {

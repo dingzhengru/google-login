@@ -3,8 +3,8 @@
     <h1>Home</h1>
     <h2>i18n test</h2>
     <p>
-        {{ $vuetify.lang.t('$vuetify.auth.login') }}
-        {{ $vuetify.lang.t('$vuetify.valid.required') }}
+        {{ $vuetify.lang.t('$vuetify.login.title') }}
+        {{ $vuetify.lang.t('$vuetify.login.required') }}
     </p>
     <v-select
         :items="getLangs"

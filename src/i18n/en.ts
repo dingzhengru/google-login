@@ -50,15 +50,36 @@ export default {
         email: 'Email',
         password: 'Password',
         required: 'Required',
-        emailLen: 'Email length must 6 ~ 30 character'
+        emailLen: 'email length must 6 ~ 30 character',
+        passwordLen: 'password length must 8 ~ 15 character',
+        emailNotExist: 'this email does not exist',
+        passwordWrong : 'incorrect password',
+        otherError: 'unexpected error, please try again',
+        success: 'login success'
     },
     register: {
-
-    },
-    auth: {
-        login: 'Login',
-    },
-    valid: {
+        title: 'Register',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        email: 'Email',
+        password: 'Password',
+        repassword: 'Password Confirmation',
         required: 'Required',
+        firstNameRequired: 'first name is required',
+        firstNameLen: 'first name length must 1 ~ 10 character',
+        lastNameRequired: 'last name is required',
+        lastNameLen: 'last name length must 1 ~ 10 character',
+        emailRequired: 'email is required',
+        emailLen: 'email length must 6 ~ 30 character',
+        emailSpecial: 'email dose not allowed special characters',
+        emailExisted: 'this email is existed',
+        passwordRequired: 'password is required',
+        passwordLen: 'password length must 8 ~ 15 character',
+        passwordSpecial: 'password dose not allowed special characters',
+        passwordValid: 'password must be 8 ~ 15 & least 1 lower english character & least 1 number character',
+        repasswordNotMatch: 'password and password confirmation do not match',
+        passwordWrong : 'incorrect password',
+        otherError: 'unexpected error, please try again',
+        success: 'login success'
     }
 }

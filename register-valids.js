@@ -7,13 +7,13 @@ export default {
         // 不可為空值
         if(!value) {
             console.log('姓氏不可為空')
-            return '姓氏不可為空'
+            return 'firstNameRequired'
         }
 
         // 長度需小於 10
         if(value.length >= 10) {
             console.log('姓氏長度需小於 10')
-            return '姓氏長度需小於 10'
+            return 'firstNameLen'
         }
         return true
     },
@@ -21,13 +21,13 @@ export default {
         // 不可為空值
         if(!value) {
             console.log('名字不可為空')
-            return '名字不可為空'
+            return 'lastNameRequired'
         }
 
         // 長度需小於 10
         if(value.length >= 10) {
             console.log('名字長度需小於 10')
-            return '名字長度需小於 10'
+            return 'lastNameLen'
         }
         return true
     },
@@ -39,25 +39,25 @@ export default {
         // 不可為空值
         if(!value) {
             console.log('信箱不可為空')
-            return '信箱不可為空'
+            return 'emailRequired'
         }
 
         // 長度需為 6~30
         if(value.length < 6 || value.length > 30) {
             console.log('信箱長度必須是 6 到 30 個字元')
-            return '信箱長度必須是 6 到 30 個字元'
+            return 'emailLen'
         }
 
         // 開頭不能是數字 (開頭是數字就回傳 true)
-        if(firstCharRegex.test(value)) {
-            console.log('信箱開頭不能是數字')
-            return '信箱開頭不能是數字'
-        }
+        // if(firstCharRegex.test(value)) {
+        //     console.log('信箱開頭不能是數字')
+        //     return '信箱開頭不能是數字'
+        // }
 
         // 不可有特殊字(有特殊字 會回傳 true)
         if(specialCharRegex.test(value)) {
             console.log('信箱不可有特殊字')
-            return '信箱不可有特殊字'
+            return 'emailSpecial'
         }
 
         // 不可重複
@@ -67,13 +67,13 @@ export default {
             data = userSnapShot.docs.map(doc => doc.data())
             if(data.length > 0) {
                 console.log('此信箱已註冊')
-                return '此信箱已註冊'
+                return 'emailExisted'
             }
         }
         catch (err) {
             console.log('認證信箱錯誤', err);
+            res.send('otherError')
         }
-
         return true
     },
     validPassword(value) {
@@ -81,27 +81,27 @@ export default {
         // 8~15字元、最少要有一個小寫英文與數字
         let passwordRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])[0-9a-zA-Z]{8,15}$")
         let specialCharRegex = new RegExp('[^A-Za-z0-9]'); // 不能有特殊字 (只要有特殊字 就會true)
-        let lengthRegex = new RegExp("[0-9a-zA-Z]{8,15}") // 符合長度會回傳 true
+        let lengthRegex = new RegExp(".{8,15}") // 符合長度會回傳 true
 
         // 不可為空值
         if(!value) {
             console.log('密碼不可為空')
-            return '密碼不可為空'
-        }
-
-        if(specialCharRegex.test(value)) {
-            console.log('密碼不可有特殊字')
-            return '密碼不可有特殊字'
+            return 'passwordRequired'
         }
 
         if(!lengthRegex.test(value)) {
             console.log('密碼長度必須是 8 到 15個字元')
-            return '密碼長度必須是 8 到 15個字元'
+            return 'passwordLen'
+        }
+
+        if(specialCharRegex.test(value)) {
+            console.log('密碼不可有特殊字')
+            return 'passwordSpecial'
         }
 
         if(!passwordRegex.test(value)) {
             console.log('密碼必須是長度為 8 到 15 的英數混合字串')
-            return '密碼必須是長度為 8 到 15 的英數混合字串'
+            return 'passwordValid'
         }
         return true
     }
