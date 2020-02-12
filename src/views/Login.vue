@@ -13,7 +13,7 @@
     <v-stepper v-model="st" id="stepper">
         <v-stepper-items>
             <v-stepper-content step="1" class="step1">
-                <h1 class="text-center">登入</h1>
+                <h1 class="text-center">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
                 <v-form
                     class="email-form"
                     v-model="loginValid"
@@ -22,7 +22,7 @@
                     <v-text-field
                         name="email"
                         v-model="email"
-                        label="信箱"
+                        :label="$vuetify.lang.t('$vuetify.login.email')"
                         required
                         counter="30"
                         :rules="emailRules"
@@ -50,7 +50,7 @@
                     <v-text-field
                         name="password"
                         v-model="password"
-                        label="密碼"
+                        :label="$vuetify.lang.t('$vuetify.login.password')"
                         required
                         counter="15"
                         ref="passwordRef"
@@ -95,15 +95,21 @@ export default {
             hasError: false,
             loginValid: false,
             isLogining: false,
-            emailRules: [
-                v => !!v || '不可為空',
-                v => (v && v.length <= 30 && v.length >= 6) || '信箱是 6 到 30個字元',
-            ],
-            passwordRules: [
+            st: 1,
+        }
+    },
+    computed: {
+        emailRules() {
+            return [
+                v => !!v || this.$vuetify.lang.t('$vuetify.login.required'),
+                v => (v && v.length <= 30 && v.length >= 6) || this.$vuetify.lang.t('$vuetify.login.emailLen'),
+            ]
+        },
+        passwordRules() {
+            return [
                 v => !!v || '不可為空',
                 v => (v && v.length <= 15 && v.length >=8 ) || '密碼是 8 到 15個字元',
-            ],
-            st: 1,
+            ]
         }
     },
     mounted () {

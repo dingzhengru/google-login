@@ -17,7 +17,11 @@ export default {
 
         }
     },
-
+    mounted() {
+        // 利用 localStorage 取得使用者預設的語言
+        console.log(`localStorage lang: ${ localStorage.getItem('lang') }`)
+        this.$vuetify.lang.current = localStorage.getItem('lang') || 'zhHant'
+    }
 }
 </script>
 

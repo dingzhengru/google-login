@@ -46,11 +46,10 @@ export default {
         pm: 'PM',
     },
     login: {
-        title: 'Login',
-        email: 'Email',
-        password: 'Password',
-        required: 'Required',
-        emailLen: 'Email length must 6 ~ 30 character'
+        title: '登入',
+        email: '信箱',
+        required: '必填',
+        emailLen: '信箱長度必須是 6 到 30個字元'
     },
     register: {
 
