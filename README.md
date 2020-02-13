@@ -123,3 +123,8 @@ export default {
     login: 'Login'
 }
 ```
+
+## localStorage
+*  此專案用此儲存語言設定、登入資料
+*  localStorage 無法存 object，所以必須把 object 轉成字串後儲存 ```JSON.stringify()```
+*  要取出 object string的時候，要先經過```JSON.parse()```轉換
