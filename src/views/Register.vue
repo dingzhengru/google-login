@@ -211,7 +211,6 @@ export default {
                 password: password
             }).then(result => {
                 let data = result.data
-                console.log(data)
                 // 回傳回來的是 Array (errors)
                 if (typeof data === 'string' || data instanceof String || Array.isArray(data)) {
                     this.hasError = true
@@ -223,7 +222,6 @@ export default {
                             this.errors.push(this.$vuetify.lang.t('$vuetify.register.emailExisted'))
                         }
                         if(data[i] == 'passwordSpecial') {
-                            console.log(1231232)
                             this.errors.push(this.$vuetify.lang.t('$vuetify.register.passwordSpecial'))
                         }
                         if(data[i] == 'passwordValid') {
@@ -236,12 +234,10 @@ export default {
                     this.hasMsg = true
                 }
                 this.isRegistering = false
-                console.log(result);
             }).catch(error => {
                 this.isRegistering = false
                 this.hasError = true
                 this.errors.push(this.$vuetify.lang.t('$vuetify.register.otherError'))
-                console.log(error);
             });
         },
     },
@@ -259,7 +255,7 @@ export default {
             // 修改 vuetify 現在的語系
             this.$vuetify.lang.current =  lang
 
-            console.log('watch: set lang:', lang)
+            // console.log('watch: set lang:', lang)
         }
     }
 }

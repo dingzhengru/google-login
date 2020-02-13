@@ -21,7 +21,7 @@ app.use(cors(corsOptions))
 
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(express.json()) // for parsing application/json
-app.use(express.static('./')) // 靜態檔案
+app.use(express.static('./dist')) // 靜態檔案
 // app.use(cors())
 
 const port = 3000

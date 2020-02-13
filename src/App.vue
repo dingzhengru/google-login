@@ -19,12 +19,10 @@ export default {
         }
     },
     mounted() {
-        console.log(`localStorage lang: ${ localStorage.getItem('lang') }`)
         
     },
     methods: {
         logout() {
-            console.log('logout')
             localStorage.removeItem('auth')
             this.$store.commit('setAuth', null)
         }

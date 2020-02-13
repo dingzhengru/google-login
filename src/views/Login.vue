@@ -193,7 +193,6 @@ export default {
                     });
                 }
                 this.isLogining = false
-                console.log(result);
             }).catch(error => {
                 // 意外的錯誤
                 this.isLogining = false
@@ -247,7 +246,6 @@ export default {
                 this.isLogining = false
                 this.hasError = true
                 this.msg = this.$vuetify.lang.t('$vuetify.login.otherError')
-                console.log(error);
             });
         }
     },
@@ -265,7 +263,7 @@ export default {
             // 修改 vuetify 現在的語系
             this.$vuetify.lang.current =  lang
 
-            console.log('watch: set lang:', lang)
+            // console.log('watch: set lang:', lang)
         }
     }
 }
