@@ -45,6 +45,14 @@ export default {
         am: 'AM',
         pm: 'PM',
     },
+    app: {
+        nav: {
+            home: 'Home',
+            login: 'Login',
+            register: 'Register',
+            logout: 'Logout'
+        }
+    },
     home: {
         user: 'User',
         firstName: 'First Name',

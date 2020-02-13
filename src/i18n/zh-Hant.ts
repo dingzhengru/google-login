@@ -45,6 +45,14 @@ export default {
         am: 'AM',
         pm: 'PM',
     },
+    app: {
+        nav: {
+            home: '首頁',
+            login: '登入',
+            register: '註冊',
+            logout: '登出'
+        }
+    },
     home: {
         user: '使用者',
         firstName: '姓氏',

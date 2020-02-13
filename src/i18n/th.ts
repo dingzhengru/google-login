@@ -45,6 +45,14 @@ export default {
         am: 'AM',
         pm: 'PM',
     },
+    app: {
+        nav: {
+            home: 'บ้าน',
+            login: 'เข้าสู่ระบบ',
+            register: 'การลงทะเบียน',
+            logout: 'ออกจากระบบ'
+        }
+    },
     home: {
         user: 'ผู้ใช้งาน',
         firstName: 'ชื่อจริง',

@@ -1,10 +1,10 @@
 <template>
 <v-app>
     <div id="nav">
-        <v-btn to="/">首頁</v-btn> |
-        <v-btn to="/login">登入</v-btn> |
-        <v-btn to="/register">註冊</v-btn> |
-        <v-btn @click="logout()">登出</v-btn>
+        <v-btn to="/">{{ $vuetify.lang.t('$vuetify.app.nav.home') }}</v-btn>
+        <v-btn to="/login">{{ $vuetify.lang.t('$vuetify.app.nav.login') }}</v-btn>
+        <v-btn to="/register">{{ $vuetify.lang.t('$vuetify.app.nav.register') }}</v-btn>
+        <v-btn @click="logout()">{{ $vuetify.lang.t('$vuetify.app.nav.logout') }}</v-btn>
     </div>
     <router-view/>
 </v-app>
@@ -39,13 +39,22 @@ export default {
     text-align: center;
     padding: 10px;
     
-
-    a {
+    a , button{
         font-weight: bold;
-        color: #2c3e50;
+        
+        margin-right: 5px;
 
         &.router-link-exact-active {
             color: #42b983;
+        }
+
+        &.v-btn--active {
+            color: darkblue;
+        }
+
+        &:hover {
+            color: white;
+            background-color: gray;
         }
     }
 }
