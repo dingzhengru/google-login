@@ -1,9 +1,10 @@
 <template>
 <v-app>
     <div id="nav">
-        <router-link to="/">首頁</router-link> |
-        <router-link to="/login">登入</router-link> |
-        <router-link to="/register">註冊</router-link> |
+        <v-btn to="/">首頁</v-btn> |
+        <v-btn to="/login">登入</v-btn> |
+        <v-btn to="/register">註冊</v-btn> |
+        <v-btn @click="logout()">登出</v-btn>
     </div>
     <router-view/>
 </v-app>
@@ -18,9 +19,15 @@ export default {
         }
     },
     mounted() {
-        // 利用 localStorage 取得使用者預設的語言
         console.log(`localStorage lang: ${ localStorage.getItem('lang') }`)
-        this.$vuetify.lang.current = localStorage.getItem('lang') || 'zhHant'
+        
+    },
+    methods: {
+        logout() {
+            console.log('logout')
+            localStorage.removeItem('auth')
+            this.$store.commit('setAuth', null)
+        }
     }
 }
 </script>

@@ -19,7 +19,8 @@ export default new Vuex.Store({
                 value: 'th'
             }
         ],
-        currentLang: ''
+        currentLang: '',
+        auth: null,
     },
     getters: {
         currentLangObject(state) {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     mutations: {
         setCurrentLang(state, payload) {
             state.currentLang = payload
+        },
+        setAuth(state, payload) {
+            state.auth = payload
         }
     },
     actions: {

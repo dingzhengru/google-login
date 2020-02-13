@@ -45,6 +45,12 @@ export default {
         am: 'AM',
         pm: 'PM',
     },
+    home: {
+        user: 'User',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        email: 'Email',
+    },
     login: {
         title: 'Login',
         email: 'Email',

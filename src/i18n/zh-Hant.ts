@@ -45,6 +45,12 @@ export default {
         am: 'AM',
         pm: 'PM',
     },
+    home: {
+        user: '使用者',
+        firstName: '姓氏',
+        lastName: '名字',
+        email: '信箱',
+    },
     login: {
         title: '登入',
         email: '信箱',

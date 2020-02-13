@@ -226,13 +226,22 @@ export default {
                         this.error = this.$vuetify.lang.t('$vuetify.login.otherError')
                     }
                 } else {
-                    // 認證成功
+                    // 登入成功
                     this.st = 3
                     this.msg = this.$vuetify.lang.t('$vuetify.login.success')
                     this.hasMsg = true
+
+                    // 登入資料放入 localStorage (只能存字串，所以先轉成字串，拿出來時再轉回來就好)
+                    localStorage.setItem('auth', JSON.stringify(data))
+
+                    // 登入資料放入 vue store
+                    this.$store.commit('setAuth', data)
+
+                    setTimeout(() => {
+                        this.$router.push('/')
+                    }, 500)
                 }
                 this.isLogining = false
-                console.log(result);
             }).catch(error => {
                 // 意外的錯誤
                 this.isLogining = false
