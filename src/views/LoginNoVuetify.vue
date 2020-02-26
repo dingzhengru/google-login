@@ -1,96 +1,80 @@
 <template>
-<v-container class="container">
-    <v-alert 
-        type="error"
-        v-model="hasError">
-        {{ error }}
-    </v-alert>
-    <v-alert 
-        type="success"
-        v-model="hasMsg">
-        {{ msg }}
-    </v-alert>
-    <v-stepper v-model="st" id="stepper">
-        <v-stepper-items>
-            <v-stepper-content step="1" class="step1">
-                <h1 class="text-center">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
-                <v-form
-                    class="email-form"
-                    v-model="emailValid"
-                    lazy-validation
-                    @submit.prevent="sendEmail()">
-                    <v-text-field
-                        name="email"
-                        v-model="email"
-                        :label="$vuetify.lang.t('$vuetify.login.email')"
-                        counter="30"
-                        :rules="emailRules"
-                        ref="emailRef"
-                        autofocus
-                    ></v-text-field>
-                    
+<v-container>
+    <div class="alert-div mt-2">
+        <v-alert 
+            type="error"
+            v-model="hasError">
+            {{ error }}
+        </v-alert>
+        <v-alert 
+            type="success"
+            v-model="hasMsg">
+            {{ msg }}
+        </v-alert>
+    </div>
+    <form>
+        <h1 class="text-center mb-4">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
+        <div class="input-box"
+            :class="{ 'input-box-fade-in': st == 1,
+                      'input-box-fade-out': st != 1 }">
+            <input 
+            type="text" 
+            name="email" 
+            v-model="email" 
+            :disabled="st != 1"
+            autofocus />
+            <label :class="{ 'label-active': !!email }">
+                Email
+            </label>
+            <v-btn
+                color="primary"
+                type="button"
+                block
+                @click="sendEmail()">
+                next
+            </v-btn>
+        </div>
+        <div class="input-box"
+             :class="{ 'input-box-password-fade-in': st == 2,
+                       'input-box-password-fade-out': st != 2 }">
+            <div class="input-box">
+                <input 
+                type="text" 
+                name="text" 
+                ref="passwordRef"
+                v-model="password" 
+                :disabled="st != 2"/>
+                <label :class="[!!password ? 'label-active' : '']">
+                    Passward
+                </label>
+            </div>
+            <v-row  no-gutters>
+                <v-col cols="3">
+                    <v-btn
+                        color="warning"
+                        type="button"
+                        block
+                        @click="st = 1">
+                        back
+                    </v-btn>
+                </v-col>
+                <v-col cols="3">
+                </v-col>
+                <v-col cols="6">
                     <v-btn
                         color="primary"
-                        type="submit"
+                        type="button"
                         block
-                        :disabled="!email || !emailValid"
-                        :loading="isLogining">
-                        <v-icon>fa-arrow-circle-right</v-icon>
+                        @click="login()">
+                        登入
                     </v-btn>
-                </v-form>
-            </v-stepper-content>
-
-            <v-stepper-content step="2" class="step2">
-                <h1 class="text-center">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
-                <v-form
-                    class="login-form"
-                    v-model="loginValid"
-                    lazy-validation
-                    @submit.prevent="login()"
-                    >
-                    <v-text-field
-                        name="password"
-                        v-model="password"
-                        :label="$vuetify.lang.t('$vuetify.login.password')"
-                        counter="15"
-                        ref="passwordRef"
-                        :rules="passwordRules"
-                    ></v-text-field>
-                    <v-row>
-                        <v-col cols="2">
-                            <v-btn
-                                color="secondary"
-                                block
-                                @click="st = 1">
-                                <v-icon>fa-arrow-circle-left</v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="2"></v-col>
-                        <v-col cols="8">
-                            <v-btn
-                                color="primary"
-                                type="submit"
-                                block
-                                :disabled="!email || !password || !loginValid"
-                                :loading="isLogining">
-                                <v-icon>fa-paper-plane</v-icon>
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    <!-- <v-btn
-                        color="primary"
-                        type="submit"
-                        block
-                        :disabled="!email || !password || !loginValid"
-                        :loading="isLogining">
-                        <v-icon>fa-paper-plane</v-icon>
-                    </v-btn> -->
-                </v-form>
-            </v-stepper-content>
-        </v-stepper-items>
-    </v-stepper>
-    <v-row class="login-bottom" no-gutters>
-        <v-col cols="6">
+                </v-col>
+            </v-row>   
+        </div>
+    </form>
+    <v-row class="login-bottom mt-3" no-gutters>
+        <v-col cols="3"></v-col>
+        <v-col cols="2">
             <v-select
                 :items="getLangs"
                 label="語系"
@@ -99,7 +83,7 @@
                 item-value="value"
             ></v-select>
         </v-col>
-        <v-col cols="6" class="text-right"></v-col>
+        <v-col cols="7"></v-col>
     </v-row>
 </v-container>
 </template>
@@ -118,7 +102,6 @@ export default {
             error: '',
             hasMsg: false,
             hasError: false,
-            emailValid: false,
             loginValid: false,
             isLogining: false,
             st: 1,
@@ -126,17 +109,17 @@ export default {
         }
     },
     computed: {
-        emailRules() {
-            return [
-                v => !!v || this.$vuetify.lang.t('$vuetify.login.required'),
-                v => (v && v.length <= 30 && v.length >= 6) || this.$vuetify.lang.t('$vuetify.login.emailLen'),
-            ]
+        emailValid () {
+            if(this.email) {
+                return true
+            }
+            return false
         },
-        passwordRules() {
-            return [
-                v => !!v || this.$vuetify.lang.t('$vuetify.login.required'),
-                v => (v && v.length <= 15 && v.length >=8 ) || this.$vuetify.lang.t('$vuetify.login.passwordLen'),
-            ]
+        passwordValid() {
+            if(this.password) {
+                return true
+            }
+            return false
         },
         getLangs() {
             return this.$store.state.langs
@@ -155,15 +138,17 @@ export default {
         // focus name input
         // this.$nextTick(() => {
         //     setTimeout(() => {
-        //         this.$refs.emailRef.focus()
+        //         this.$refs.emailRef.focus();
         //     }, 500)
         // });
     },
     methods: {
         sendEmail() {
+            console.log(this.email)
             // 先認證 email
-            if(!this.emailValid || !this.email)
+            if(!this.emailValid) {
                 return
+            }
             const email = this.email
 
             this.isLogining = true
@@ -202,7 +187,7 @@ export default {
         },
         login () {
             // 驗證必須通過、email 與 password 不可為空
-            if(!this.loginValid || !this.email || !this.password)
+            if(!this.emailValid || !this.passwordValid)
                 return
             const email = this.email
             const password = this.password
@@ -272,26 +257,107 @@ export default {
 <style lang="scss" scoped>
 
 .container {
-    #stepper {
-        max-width: 450px;
-        margin: 0 auto;
-        margin-top: 100px;
-        .step1 {
 
-        }
-        .step2 {
-            
+    .alert-div {
+        margin-bottom: 50px;
+    }
+
+    form, form * { margin:0 auto; }
+
+    form {
+        height: 500px;
+        width: 450px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px -3px #333;
+        padding: 40px;
+        padding-top: 60px;
+    }
+
+    .input-box {
+        position: relative;
+
+        // margin-top: 10px;
+
+        top: 0;
+        left: 0;
+
+        input {
+            width: 100%;
+            padding: 0.625rem 10px;
+            font-size: 1rem;
+            letter-spacing: 0.062rem;
+            margin-bottom: 1.875rem;
+            border: 1px solid #ccc;
+            background: transparent;
+            border-radius: 4px;
         }
 
+        label {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            padding: 0.625rem 0;
+            font-size: 1rem;
+            color: grey;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        // 跟下面的 focus 一樣
+        .label-active {
+            top: -1.125rem;
+            left: 10px;
+            color: #1a73e8;
+            font-size: 0.75rem;
+            background-color: white;
+            height: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        input:focus ~ label{
+            top: -1.125rem;
+            left: 10px;
+            color: #1a73e8;
+            font-size: 0.75rem;
+            background-color: white;
+            height: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .input-box-fade-in {
+        left: 0;
+        height: 100px;
+        opacity: 1;
+        transition: all 0.2s linear;
+        transition-delay: 0.2s;
+    }
+
+    .input-box-fade-out {
+        left: -200px;
+        height: 0;
+        opacity: 0;
+        transition: all 0.2s linear;
+    }
+
+    .input-box-password-fade-in {
+        left: 0;
+        height: 100px;
+        opacity: 1;
+        transition: all 0.2s linear;
+        transition-delay: 0.2s;
+    }
+
+    .input-box-password-fade-out {
+        left: 200px;
+        height: 0;
+        opacity: 0;
+        transition: all 0.2s linear;
     }
     .login-bottom {
-        margin: 0 auto;
-        margin-top: 20px;
         margin-bottom: 100px;
-        width: 450px;
     }
 }
-
-
-
 </style>
