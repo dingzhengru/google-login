@@ -90,7 +90,7 @@
         </v-stepper-items>
     </v-stepper>
     <v-row class="login-bottom" no-gutters>
-        <v-col cols="6">
+        <v-col cols="4">
             <v-select
                 :items="getLangs"
                 label="語系"
@@ -99,7 +99,7 @@
                 item-value="value"
             ></v-select>
         </v-col>
-        <v-col cols="6" class="text-right"></v-col>
+        <v-col cols="8" class="text-right"></v-col>
     </v-row>
 </v-container>
 </template>

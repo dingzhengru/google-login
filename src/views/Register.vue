@@ -1,5 +1,5 @@
 <template>
-<v-container class="container">
+<v-container class="register-container">
     <div v-show="hasError">
         <v-alert 
             type="error"
@@ -60,6 +60,9 @@
                     ref="emailRef"
                 ></v-text-field>
                 <v-text-field
+                    :type="isShowPassword ? 'text' : 'password'"
+                    :append-icon="isShowPassword ? 'fa-eye' : 'fa-eye-slash'"
+                    @click:append="isShowPassword = !isShowPassword"
                     name="password"
                     v-model="password"
                     :label="$vuetify.lang.t('$vuetify.register.password')"
@@ -68,6 +71,10 @@
                     :rules="passwordRules"
                 ></v-text-field>
                 <v-text-field
+
+                    :type="isShowPassword ? 'text' : 'password'"
+                    :append-icon="isShowRepassword ? 'fa-eye' : 'fa-eye-slash'"
+                    @click:append="isShowRepassword = !isShowRepassword"
                     name="repassword"
                     v-model="repassword"
                     :label="$vuetify.lang.t('$vuetify.register.repassword')"
@@ -96,8 +103,8 @@
       
         </v-card-actions>
     </v-card>
-    <v-row class="login-bottom" no-gutters>
-        <v-col cols="6">
+    <v-row class="register-bottom" no-gutters>
+        <v-col cols="4">
             <v-select
                 :items="getLangs"
                 label="語系"
@@ -106,7 +113,7 @@
                 item-value="value"
             ></v-select>
         </v-col>
-        <v-col cols="6" class="text-right"></v-col>
+        <v-col cols="8" class="text-right"></v-col>
     </v-row>
 </v-container>
 </template>
@@ -130,6 +137,8 @@ export default {
             hasError: false,
             registerValid: false,
             isRegistering: false,
+            isShowPassword: false,
+            isShowRepassword: false,
             lang: {text: '繁體中文', value: 'zhHant'}
         }
     },
@@ -261,9 +270,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
-.container {
+// 不用 scope 才可對 v-input__icon 改變 style
+
+
+.register-container {
     .register-card {
         margin-top: 100px;
     }
@@ -273,8 +285,14 @@ export default {
         margin-bottom: 100px;
         width: 450px;
     }
-}
 
+    .v-input__icon--append .fa-eye { 
+        font-size: 1rem;
+    }
+    .v-input__icon--append .fa-eye-slash  { 
+        font-size: 1rem;
+    }
+}
 
 
 </style>

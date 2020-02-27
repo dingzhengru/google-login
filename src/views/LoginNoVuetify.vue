@@ -1,6 +1,6 @@
 <template>
 <v-container>
-    <div class="alert-div mt-2">
+    <!-- <div class="alert-div mt-2">
         <v-alert 
             type="error"
             v-model="hasError">
@@ -11,27 +11,37 @@
             v-model="hasMsg">
             {{ msg }}
         </v-alert>
-    </div>
-    <form>
+    </div> -->
+    <form @submit.prevent="">
         <h1 class="text-center mb-4">{{ $vuetify.lang.t('$vuetify.login.title') }}</h1>
         <div class="input-box"
             :class="{ 'input-box-fade-in': st == 1,
                       'input-box-fade-out': st != 1 }">
             <input 
+            :class="{'error-input': !emailValid || hasError}"
             type="text" 
             name="email" 
+            ref="email"
             v-model="email" 
             :disabled="st != 1"
-            autofocus />
-            <label :class="{ 'label-active': !!email }">
-                Email
+            required
+            autocomplete="off" />
+            <label :class="{ 'label-active': !!email}">
+                {{ $vuetify.lang.t('$vuetify.login.email') }}
             </label>
+            <div class="error-msg" v-show="hasError || error">
+                <span class="fas fa-exclamation-circle fa-sm mr-1"></span>
+                <span>{{ error }}</span>
+            </div>
             <v-btn
                 color="primary"
-                type="button"
+                type="submit"
                 block
-                @click="sendEmail()">
-                next
+                @click="sendEmail()"
+                :loading="isLogining"
+                :disabled="st != 1"
+                v-if="st == 1">
+                <v-icon>fa-arrow-circle-right</v-icon>
             </v-btn>
         </div>
         <div class="input-box"
@@ -39,23 +49,35 @@
                        'input-box-password-fade-out': st != 2 }">
             <div class="input-box">
                 <input 
-                type="text" 
+                :class="{'error-input': !passwordValid || hasError}"
+                :type="passwordType" 
                 name="text" 
-                ref="passwordRef"
+                ref="password"
                 v-model="password" 
-                :disabled="st != 2"/>
+                :disabled="st != 2"
+                required
+                autocomplete="off"/>
+
                 <label :class="[!!password ? 'label-active' : '']">
-                    Passward
+                    {{ $vuetify.lang.t('$vuetify.login.password') }}
                 </label>
+                <div class="error-msg" v-show="hasError || error">
+                    <span class="fas fa-exclamation-circle fa-sm mr-1"></span>
+                    <span>{{ error }}</span>
+                </div>
+                <span class="fa fa-fw eye-icon"
+                      :class="{ 'fa-eye': passwordType == 'text',
+                                'fa-eye-slash': passwordType == 'password' }"
+                      @click="togglePassword()"></span>
             </div>
-            <v-row  no-gutters>
+            <v-row no-gutters>
                 <v-col cols="3">
                     <v-btn
-                        color="warning"
+                        color="secondary"
                         type="button"
                         block
-                        @click="st = 1">
-                        back
+                        @click="backStep()">
+                        <v-icon>fa-arrow-circle-left</v-icon>
                     </v-btn>
                 </v-col>
                 <v-col cols="3">
@@ -63,9 +85,11 @@
                 <v-col cols="6">
                     <v-btn
                         color="primary"
-                        type="button"
+                        type="submit"
                         block
-                        @click="login()">
+                        @click="login()"
+                        :loading="isLogining"
+                        :disabled="st != 2">
                         登入
                     </v-btn>
                 </v-col>
@@ -98,6 +122,7 @@ export default {
         return {
             email: '',
             password: '',
+            passwordType: 'password',
             msg: '',
             error: '',
             hasMsg: false,
@@ -136,11 +161,11 @@ export default {
         this.lang = this.getCurrentLangObject
 
         // focus name input
-        // this.$nextTick(() => {
-        //     setTimeout(() => {
-        //         this.$refs.emailRef.focus();
-        //     }, 500)
-        // });
+        this.$nextTick(() => {
+            setTimeout(() => {
+                this.$refs.email.focus();
+            }, 100)
+        });
     },
     methods: {
         sendEmail() {
@@ -173,7 +198,7 @@ export default {
                     this.st = 2
                     this.$nextTick(() => {
                         setTimeout(() => {
-                            this.$refs.passwordRef.focus()
+                            this.$refs.password.focus()
                         }, 500)
                     })
                 }
@@ -211,7 +236,7 @@ export default {
                     }
                 } else {
                     // 登入成功
-                    this.st = 3
+                    // this.st = 3
                     this.msg = this.$vuetify.lang.t('$vuetify.login.success')
                     this.hasMsg = true
 
@@ -232,6 +257,20 @@ export default {
                 this.hasError = true
                 this.msg = this.$vuetify.lang.t('$vuetify.login.otherError')
             })
+        },
+        backStep() {
+            this.st = 1
+            this.$nextTick(() => {
+                setTimeout(() => {
+                    this.$refs.email.focus()
+                }, 500)
+            })
+        },
+        togglePassword() {
+            if(this.passwordType == 'password') 
+                this.passwordType = 'text'
+            else
+                this.passwordType = 'password'
         }
     },
     watch: {
@@ -258,10 +297,6 @@ export default {
 
 .container {
 
-    .alert-div {
-        margin-bottom: 50px;
-    }
-
     form, form * { margin:0 auto; }
 
     form {
@@ -271,10 +306,13 @@ export default {
         box-shadow: 0 2px 10px -3px #333;
         padding: 40px;
         padding-top: 60px;
+        margin-top: 50px;
+        overflow: hidden; // 關鍵屬性，不然動畫會是跑到外面
     }
 
     .input-box {
         position: relative;
+        
 
         // margin-top: 10px;
 
@@ -286,10 +324,15 @@ export default {
             padding: 0.625rem 10px;
             font-size: 1rem;
             letter-spacing: 0.062rem;
-            margin-bottom: 1.875rem;
+            // margin-bottom: 1.875rem;
             border: 1px solid #ccc;
             background: transparent;
             border-radius: 4px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #1a73e8;
         }
 
         label {
@@ -300,12 +343,29 @@ export default {
             font-size: 1rem;
             color: grey;
             pointer-events: none;
-            transition: 0.5s;
+            transition: 0.3s;
+        }
+
+        .error-msg {
+            font-size: 0.75rem;
+            color: red;
+        }
+
+        // error
+        .error-input {
+            border: 1px solid red;
+        }
+        .error-input:focus {
+            outline: none !important;
+            border: 2px solid red !important;
+        }
+        .error-input ~ label {
+           color: red !important;
         }
 
         // 跟下面的 focus 一樣
-        .label-active {
-            top: -1.125rem;
+        label.label-active {
+            top: -1.2rem;
             left: 10px;
             color: #1a73e8;
             font-size: 0.75rem;
@@ -313,10 +373,11 @@ export default {
             height: 10px;
             padding-left: 5px;
             padding-right: 5px;
+            padding-bottom: 18px;
         }
 
         input:focus ~ label{
-            top: -1.125rem;
+            top: -1.2rem;
             left: 10px;
             color: #1a73e8;
             font-size: 0.75rem;
@@ -324,8 +385,23 @@ export default {
             height: 10px;
             padding-left: 5px;
             padding-right: 5px;
+            padding-bottom: 18px;
+        }
+        .eye-icon {
+          float: right;
+          margin-left: -65px;
+          margin-top: 15px;
+          padding-right: 25px;
+          position: relative;
+          z-index: 2;
+        }
+
+        button {
+            margin-top: 15px;
         }
     }
+
+    // Transition
 
     .input-box-fade-in {
         left: 0;
@@ -336,7 +412,7 @@ export default {
     }
 
     .input-box-fade-out {
-        left: -200px;
+        left: -100%;
         height: 0;
         opacity: 0;
         transition: all 0.2s linear;
@@ -351,7 +427,7 @@ export default {
     }
 
     .input-box-password-fade-out {
-        left: 200px;
+        left: 100%;
         height: 0;
         opacity: 0;
         transition: all 0.2s linear;

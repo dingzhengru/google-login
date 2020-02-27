@@ -2,7 +2,7 @@
 <v-app>
     <div id="nav">
         <v-btn to="/">{{ $vuetify.lang.t('$vuetify.app.nav.home') }}</v-btn>
-        <v-btn to="/login-no-vuetify">登入(NoVuetify)</v-btn>
+        <v-btn to="/login-no-vuetify">{{ $vuetify.lang.t('$vuetify.app.nav.login') }}(NoVuetify)</v-btn>
         <v-btn to="/login">{{ $vuetify.lang.t('$vuetify.app.nav.login') }}</v-btn>
         <v-btn to="/register">{{ $vuetify.lang.t('$vuetify.app.nav.register') }}</v-btn>
         <v-btn @click="logout()">{{ $vuetify.lang.t('$vuetify.app.nav.logout') }}</v-btn>
