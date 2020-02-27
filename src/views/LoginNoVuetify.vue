@@ -18,7 +18,7 @@
             :class="{ 'input-box-fade-in': st == 1,
                       'input-box-fade-out': st != 1 }">
             <input 
-            :class="{'error-input': !emailValid || hasError}"
+            :class="{'error-input': hasError}"
             type="text" 
             name="email" 
             ref="email"
@@ -49,7 +49,7 @@
                        'input-box-password-fade-out': st != 2 }">
             <div class="input-box">
                 <input 
-                :class="{'error-input': !passwordValid || hasError}"
+                :class="{'error-input': hasError}"
                 :type="passwordType" 
                 name="text" 
                 ref="password"
@@ -169,7 +169,6 @@ export default {
     },
     methods: {
         sendEmail() {
-            console.log(this.email)
             // 先認證 email
             if(!this.emailValid) {
                 return
@@ -388,12 +387,11 @@ export default {
             padding-bottom: 18px;
         }
         .eye-icon {
-          float: right;
-          margin-left: -65px;
-          margin-top: 15px;
-          padding-right: 25px;
-          position: relative;
-          z-index: 2;
+            position: absolute;
+            top: 15px;
+            right: 5px;
+            z-index: 2;
+            cursor: pointer;
         }
 
         button {

@@ -61,27 +61,39 @@
                 ></v-text-field>
                 <v-text-field
                     :type="isShowPassword ? 'text' : 'password'"
-                    :append-icon="isShowPassword ? 'fa-eye' : 'fa-eye-slash'"
-                    @click:append="isShowPassword = !isShowPassword"
                     name="password"
                     v-model="password"
                     :label="$vuetify.lang.t('$vuetify.register.password')"
                     counter="15"
                     ref="passwordRef"
                     :rules="passwordRules"
-                ></v-text-field>
+                >
+                    <template v-slot:append>
+                        <i style="cursor: pointer;"
+                            class="fas fa-sm"
+                           :class="{ 'fa-eye': isShowPassword,
+                                     'fa-eye-slash': !isShowPassword }"
+                            @click="isShowPassword = !isShowPassword"></i>
+                    </template>
+                </v-text-field>
                 <v-text-field
-
-                    :type="isShowPassword ? 'text' : 'password'"
+                    :type="isShowRepassword ? 'text' : 'password'"
                     :append-icon="isShowRepassword ? 'fa-eye' : 'fa-eye-slash'"
-                    @click:append="isShowRepassword = !isShowRepassword"
                     name="repassword"
                     v-model="repassword"
                     :label="$vuetify.lang.t('$vuetify.register.repassword')"
                     counter="15"
                     ref="repasswordRef"
                     :rules="repasswordRules"
-                ></v-text-field>
+                >
+                    <template v-slot:append>
+                        <i style="cursor: pointer;"
+                            class="fas fa-sm"
+                           :class="{ 'fa-eye': isShowRepassword,
+                                     'fa-eye-slash': !isShowRepassword }"
+                            @click="isShowRepassword = !isShowRepassword"></i>
+                    </template>
+                </v-text-field>
                 <v-btn
                     color="primary"
                     type="submit"
